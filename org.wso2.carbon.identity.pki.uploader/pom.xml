@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.wso2.carbon</groupId>
+    <artifactId>pki-authenticator</artifactId>
+    <version>4.0.0</version>
+    	<relativePath>../pom.xml</relativePath>
+  </parent>
+  <groupId>org.wso2.carbon</groupId>
+  	<packaging>war</packaging>
+  <artifactId>org.wso2.carbon.identity.pki.uploader</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <name>org.wso2.carbon.identity.pki.uploader</name>
+  <url>http://maven.apache.org</url>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+        </dependency>
+	<dependency>
+		<groupId>jstl</groupId>
+		<artifactId>jstl</artifactId>
+		<version>1.2</version>
+		<scope>compile</scope>
+	</dependency>
+	<dependency>
+		<groupId>taglibs</groupId>
+		<artifactId>standard</artifactId>
+		<version>1.1.2</version>
+		<scope>compile</scope>
+	</dependency>	
+  </dependencies>
+  
+  
+  	<build>
+		<finalName>pki.uploader</finalName>
+		<plugins>
+		<plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.12.4</version>
+                <inherited>false</inherited>
+                <configuration>
+                    <systemProperties>
+
+                        <property>
+                            <name>framework.resource.location</name>
+                            <value>
+                                ${basedir}/src/main/resources/
+                            </value>
+                        </property>
+                    </systemProperties>
+                </configuration>
+            </plugin>
+		
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.0</version>
+				<configuration>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.1-alpha-2</version>
+				<configuration>
+					    <webXml>${basedir}/src/main/resources/WebContent/WEB-INF/web.xml</webXml>        
+					<packagingExcludes>
+						WEB-INF/lib/servlet-api-2.4.jar,WEB-INF/lib/xml-apis-*.jar,WEB-INF/lib/xercesImpl-*.jar
+					</packagingExcludes>
+
+					<webResources>
+						<resource>
+							<directory>${basedir}/src/main/resources/</directory>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	
+    	<repositories>
+        <repository>
+            <id>wso2-maven2-repository</id>
+            <url>http://dist.wso2.org/maven2</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <!--pluginRepository>
+            <id>tlc</id>
+            <name>TLC Repository</name>
+
+            <url>http://commons.ucalgary.ca/pub/m2</url>
+        </pluginRepository-->
+
+        <pluginRepository>
+            <id>wso2-maven2-repository</id>
+            <url>http://dist.wso2.org/maven2</url>
+        </pluginRepository>
+    </pluginRepositories>
+  
+</project>

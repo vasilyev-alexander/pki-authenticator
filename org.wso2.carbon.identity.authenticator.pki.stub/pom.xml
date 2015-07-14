@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+        <groupId>org.wso2.carbon</groupId>
+        <artifactId>pki-authenticator</artifactId>
+        <version>4.0.0</version>
+	<relativePath>../pom.xml</relativePath>
+    </parent>
+
+  <groupId>org.wso2.carbon</groupId>
+  <artifactId>org.wso2.carbon.identity.authenticator.pki.stub</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <name>org.wso2.carbon.identity.authenticator.pki.stub</name>
+  <url>http://maven.apache.org</url>
+<packaging>bundle</packaging>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+
+        <dependency>
+            <groupId>org.apache.axis2.wso2</groupId>
+            <artifactId>axis2</artifactId>
+	    <version>1.6.1.wso2v10</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.axis2.wso2</groupId>
+            <artifactId>axis2-client</artifactId>
+<version>1.6.1.wso2v10</version>
+        </dependency>
+        <dependency>
+    <groupId>org.apache.ws.commons.axiom</groupId>
+    <artifactId>axiom-api</artifactId>
+    <version>1.2.15</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.ws.commons.axiom</groupId>
+    <artifactId>axiom-impl</artifactId>
+    <version>1.2.15</version>
+    <scope>runtime</scope>
+</dependency>
+  </dependencies>
+
+
+ <build>
+        <plugins>            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.1</version>
+                <executions>
+                    <execution>
+                        <id>source-code-generation</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <path id="wsdl2java.classpath">
+			 	                    <pathelement location="http://maven.wso2.org/nexus/content/groups/wso2-public/org/apache/ws/commons/axiom/wso2/axiom/1.2.11.wso2v4/axiom-1.2.11.wso2v4.jar"/>
+                                    <pathelement location="${settings.localRepository}/org/apache/ws/commons/axiom/axiom-api/1.2.15/axiom-api-1.2.15.jar" />
+                                    <pathelement location="${settings.localRepository}/org/apache/ws/commons/axiom/axiom-impl/1.2.15/axiom-impl-1.2.15.jar" />
+                                    <pathelement location="${settings.localRepository}/org/apache/axis2/wso2/axis2-client/1.6.1.wso2v10/axis2-client-1.6.1.wso2v10.jar"/>
+                                    <pathelement location="${settings.localRepository}/org/apache/axis2/wso2/axis2/1.6.1.wso2v10/axis2-1.6.1.wso2v10.jar"/>
+                                    <pathelement location="${settings.localRepository}/org/apache/ws/commons/axiom/wso2/axiom/1.2.11.wso2v4/axiom-1.2.11.wso2v4.jar"/>
+                                </path>
+				                <java classname="org.apache.axis2.wsdl.WSDL2Java" fork="true">
+					                <arg line="-uri src/main/resources/PKIAuthenticator.wsdl -u -uw -o target/generated-code   -p org.wso2.carbon.identity.authenticator.pki.stub -ns2p http://pki.authenticator.identity.carbon.wso2.org=org.wso2.carbon.identity.authenticator.pki.stub,http://dto.pki.authenticator.identity.carbon.wso2.org/xsd=org.wso2.carbon.identity.authenticator.pki.stub.dto,http://beans.pki.authenticator.identity.carbon.wso2.org/xsd=org.wso2.carbon.identity.authenticator.pki.stub.beans"/>
+		                            <classpath refid="wsdl2java.classpath"/>
+				                </java>
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>
+                                    target/generated-code/src
+                                </source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>1.4.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+                        <Bundle-Name>${project.artifactId}</Bundle-Name>
+                        <Export-Package>
+                            org.wso2.carbon.identity.authenticator.pki.stub.*;version="${carbon.platform.package.export.version}",
+org.wso2.carbon.captcha.mgt.*;version="${carbon.platform.package.export.version}",
+                        </Export-Package>
+                        <Import-Package>
+			    !org.wso2.carbon.identity.authenticator.pki.stub.*,   
+	                    !javax.xml.namespace,
+                            javax.xml.namespace; version=0.0.0,
+                            *;resolution:=optional,
+                        </Import-Package>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
