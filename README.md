@@ -5,8 +5,8 @@ Custom Authenticator for PKI with WSO2 IS
 ```
 cd ~/Documents
 git clone https://github.com/vasilyev-alexander/pki-authenticator.git
-sudo port install maven2
 cd pki-authenticator
+sudo port install maven2
 mvn package
 ```
 
